@@ -1,15 +1,36 @@
 import React, { useState } from "react";
-import diceone from "../assets/dice_1.png";
+import diceone_1 from "../assets/Dice/dice_1.png";
+import diceone_2 from "../assets/Dice/dice_2.png";
+import diceone_3 from "../assets/Dice/dice_3.png";
+import diceone_4 from "../assets/Dice/dice_4.png";
+import diceone_5 from "../assets/Dice/dice_5.png";
+import diceone_6 from "../assets/Dice/dice_6.png";
 
 const GameStart = () => {
   const SelectArray = [1, 2, 3, 4, 5, 6];
   const [Isselect, setIsselect] = useState(null);
+  const [randomnumber, setrandomnumber] = useState();
+  const diceImages = [
+    diceone_1,
+    diceone_2,
+    diceone_3,
+    diceone_4,
+    diceone_5,
+    diceone_6,
+  ];
 
   // handle selection
   const handleSelection = (i) => {
     setIsselect(i);
-    console.log(i);
   };
+
+  // handle dice roll
+
+  const RandomNmber = (min, max) => {
+    setrandomnumber(Math.floor(Math.random() * (max - min) + min));
+  };
+
+  const handleDice = () => {};
 
   return (
     <>
@@ -43,15 +64,20 @@ const GameStart = () => {
         </div>
         <div>
           <div className="flex flex-col items-center justify-center">
-            <picture>
-              <img src={diceone} alt={diceone} />
-            </picture>
-            <h5 className="font-Popins font-medium text-[24px] mt-2">
-              Click on Dice to roll
-            </h5>
-            {/* <button className="px-[60px] py-[10px] border border-solid border-black rounded-md">
-              Reset Score
-            </button> */}
+            <div
+              className="flex flex-col justify-center items-center cursor-pointer"
+              onClick={() => RandomNmber(0, 6)}
+            >
+              <picture>
+                <img
+                  src={diceImages[randomnumber]}
+                  alt={`diceone_${randomnumber}`}
+                />
+              </picture>
+              <h5 className="font-Popins font-medium text-[24px] mt-2">
+                Click on Dice to roll
+              </h5>
+            </div>
             <div class="group relative inline-block rounded-md mt-6">
               <button class="relative z-10 px-[60px] py-[10px] font-semibold font-Popins text-[16px] border border-solid border-black bg-transparent text-black transition-colors duration-300 rounded-md">
                 Reset Score
