@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ShowRules from "./ShowRules";
 
 const GameStart = () => {
   const SelectArray = [1, 2, 3, 4, 5, 6];
@@ -7,6 +8,7 @@ const GameStart = () => {
   const [diceValue, setdiceValue] = useState("");
   const [score, setscore] = useState(1);
   const [error, seterror] = useState("");
+  const [ShowRulesss, setShowRulesss] = useState(false);
 
   // handle selection
   const handleSelection = (i, value) => {
@@ -42,6 +44,11 @@ const GameStart = () => {
   // handle reset btn
   const HandleResetBtn = () => {
     setscore(0);
+  };
+
+  // Handle show rules
+  const HandleShowRules = () => {
+    setShowRulesss(!ShowRulesss);
   };
 
   return (
@@ -104,10 +111,16 @@ const GameStart = () => {
               </button>
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-400 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-md"></div>
             </div>
-            <button className="mt-6 px-[62px] py-[10px] font-semibold font-Popins text-[16px] bg-black text-white rounded-md">
+            <button
+              className="mt-6 px-[62px] py-[10px] font-semibold font-Popins text-[16px] bg-black text-white rounded-md"
+              onClick={HandleShowRules}
+            >
               Show Rules
             </button>
           </div>
+        </div>
+        <div className="flex justify-center mt-[56px] mb-5">
+          {ShowRulesss ? <ShowRules /> : ""}
         </div>
       </div>
     </>

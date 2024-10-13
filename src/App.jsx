@@ -3,10 +3,10 @@ import DicegameHome from "./Components/DicegameHome";
 import GameStart from "./Components/GameStart";
 
 function App() {
-  const [IsStart, setIsStart] = useState(true);
+  const [IsStart, setIsStart] = useState(false);
 
   const GameStarted = () => {
-    // setIsStart(!IsStart);
+    setIsStart(!IsStart);
   };
 
   return (
