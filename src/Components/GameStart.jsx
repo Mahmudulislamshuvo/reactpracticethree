@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ShowRules from "./ShowRules";
+import { ErrorToast, SuccessToast } from "../utils/Toastify";
 
 const GameStart = () => {
   const SelectArray = [1, 2, 3, 4, 5, 6];
@@ -20,26 +21,22 @@ const GameStart = () => {
   // handle dice roll
 
   const RandomNmber = (min, max) => {
-    console.log(diceValue, Isselect);
-
     if (Isselect === null) {
       seterror(true);
       return;
     }
-    if (Isselect) {
-      seterror(false);
-    }
-    setrandomnumber(Math.floor(Math.random() * (max - min) + min));
-  };
 
-  useEffect(() => {
-    // handle score
-    if (diceValue === randomnumber) {
-      setscore(score + 4);
+    const newRandom = Math.floor(Math.random() * (max - min) + min);
+    setrandomnumber(newRandom);
+
+    if (diceValue === newRandom) {
+      setscore((prev) => prev + 4);
+      SuccessToast("Yaa! you are win +4");
     } else {
-      setscore(score - 1);
+      setscore((prev) => prev - 1);
+      ErrorToast("Opps! you guess the wrong number -1");
     }
-  }, [randomnumber]);
+  };
 
   // handle reset btn
   const HandleResetBtn = () => {
@@ -94,7 +91,7 @@ const GameStart = () => {
               <picture>
                 <img
                   // src={diceImages[randomnumber]}
-                  src={`/src/assets/Dice/dice_${randomnumber}.png`}
+                  src={`/public/Dice/dice_${randomnumber}.png`}
                   alt={`diceone_${randomnumber}`}
                 />
               </picture>
