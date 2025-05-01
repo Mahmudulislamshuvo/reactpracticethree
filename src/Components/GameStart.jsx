@@ -1,126 +1,105 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ShowRules from "./ShowRules";
 import { ErrorToast, SuccessToast } from "../utils/Toastify";
+import dice1 from "../assets/Dice/dice_1.png";
+import dice2 from "../assets/Dice/dice_2.png";
+import dice3 from "../assets/Dice/dice_3.png";
+import dice4 from "../assets/Dice/dice_4.png";
+import dice5 from "../assets/Dice/dice_5.png";
+import dice6 from "../assets/Dice/dice_6.png";
 
 const GameStart = () => {
-  const SelectArray = [1, 2, 3, 4, 5, 6];
-  const [Isselect, setIsselect] = useState(null);
-  const [randomnumber, setrandomnumber] = useState(1);
-  const [diceValue, setdiceValue] = useState("");
-  const [score, setscore] = useState(1);
-  const [error, seterror] = useState("");
-  const [ShowRulesss, setShowRulesss] = useState(false);
+  const options = [1, 2, 3, 4, 5, 6];
+  const diceImages = [dice1, dice2, dice3, dice4, dice5, dice6];
 
-  // handle selection
-  const handleSelection = (i, value) => {
-    setIsselect(i);
-    setdiceValue(value);
-    seterror("");
+  const [selectedNumber, setSelectedNumber] = useState(null);
+  const [diceRoll, setDiceRoll] = useState(1);
+  const [score, setScore] = useState(0);
+  const [showRules, setShowRules] = useState(false);
+
+  const handleSelection = (num) => {
+    setSelectedNumber(num);
   };
 
-  // handle dice roll
-
-  const RandomNmber = (min, max) => {
-    if (Isselect === null) {
-      seterror(true);
+  const rollDice = () => {
+    if (selectedNumber === null) {
+      ErrorToast("প্রথমে একটি সংখ্যা সিলেক্ট করুন");
       return;
     }
+    const roll = Math.floor(Math.random() * 6) + 1;
+    setDiceRoll(roll);
 
-    const newRandom = Math.floor(Math.random() * (max - min) + min);
-    setrandomnumber(newRandom);
-
-    if (diceValue === newRandom) {
-      setscore((prev) => prev + 4);
-      SuccessToast("Yaa! you are win +4");
+    if (roll === selectedNumber) {
+      setScore((s) => s + 4);
+      SuccessToast("অভিনন্দন! +4 পয়েন্ট");
     } else {
-      setscore((prev) => prev - 1);
-      ErrorToast("Opps! you guess the wrong number -1");
+      setScore((s) => s - 1);
+      ErrorToast("ভুল! -1 পয়েন্ট");
     }
   };
 
-  // handle reset btn
-  const HandleResetBtn = () => {
-    setscore(0);
-  };
-
-  // Handle show rules
-  const HandleShowRules = () => {
-    setShowRulesss(!ShowRulesss);
-  };
+  const resetScore = () => setScore(0);
+  const toggleRules = () => setShowRules((r) => !r);
 
   return (
-    <>
-      <div className="mt-[50px] mx-[90px]">
-        <div className="flex justify-between items-center text-center">
-          <div className="text-center w-[200px]">
-            <p className="font-Popins font-medium text-[100px] leading-none">
-              {score}
-            </p>
-            <p className="font-Popins font-medium text-[24px] leading-none">
-              Total Score
-            </p>
-          </div>
-          <div className="text-center flex justify-end items-end flex-col w-full">
-            <div className="text-red-500 pb-2">
-              {error ? "You have to select one to play game" : ""}
-            </div>
-            <div className="flex gap-x-5">
-              {SelectArray.map((value, i) => (
-                <div
-                  key={i}
-                  className={`cursor-pointer text-[24px] font-bold font-Popins flex text-center items-center justify-center border-2 border-solid border-black h-[70px] w-[70px] rounded-xl
-                    ${Isselect === i ? "bg-black text-white" : ""}`}
-                  onClick={() => handleSelection(i, value)}
-                >
-                  {value}
-                </div>
-              ))}
-            </div>
-            <p className="text-[24px] font-bold font-Popins text-end mt-3">
-              Select Number
-            </p>
-          </div>
-          <div></div>
+    <div className="mt-12 mx-24">
+      <div className="flex justify-between">
+        {/* Score Display */}
+        <div className="w-48 text-center">
+          <p className="text-6xl font-bold">{score}</p>
+          <p className="text-xl">Total Score</p>
         </div>
-        <div>
-          <div className="flex flex-col items-center justify-center">
-            <div
-              className="flex flex-col justify-center items-center cursor-pointer"
-              onClick={() => RandomNmber(1, 7)}
-            >
-              <picture>
-                <img
-                  // src={diceImages[randomnumber]}
-                  src={`/public/Dice/dice_${randomnumber}.png`}
-                  alt={`diceone_${randomnumber}`}
-                />
-              </picture>
-              <h5 className="font-Popins font-medium text-[24px] mt-2">
-                Click on Dice to roll
-              </h5>
-            </div>
-            <div className="group relative inline-block rounded-md mt-6">
-              <button
-                className="relative z-10 px-[60px] py-[10px] font-semibold font-Popins text-[16px] border border-solid border-black bg-transparent text-black transition-colors duration-300 rounded-md"
-                onClick={HandleResetBtn}
+        {/* Number Options */}
+        <div className="text-center">
+          <div className="flex gap-4">
+            {options.map((num) => (
+              <div
+                key={num}
+                onClick={() => handleSelection(num)}
+                className={`w-16 h-16 flex items-center justify-center border-2 rounded-xl cursor-pointer 
+                  ${selectedNumber === num ? "bg-black text-white" : ""}`}
               >
-                Reset Score
-              </button>
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-400 to-transparent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-md"></div>
-            </div>
-            <button
-              className="mt-6 px-[62px] py-[10px] font-semibold font-Popins text-[16px] bg-black text-white rounded-md"
-              onClick={HandleShowRules}
-            >
-              Show Rules
-            </button>
+                {num}
+              </div>
+            ))}
           </div>
+          <p className="mt-2 font-semibold">Select Number</p>
         </div>
-        <div className="flex justify-center mt-[56px] mb-5">
-          {ShowRulesss ? <ShowRules /> : ""}
-        </div>
+        <div className="w-48" /> {/* spacer */}
       </div>
-    </>
+
+      {/* Dice & Actions */}
+      <div className="flex flex-col items-center mt-8">
+        <div onClick={rollDice} className="cursor-pointer">
+          <img
+            src={diceImages[diceRoll - 1]}
+            alt={`dice-${diceRoll}`}
+            className="w-[300px] h-[250px]"
+          />
+          <p className="mt-2">Click on Dice to roll</p>
+        </div>
+
+        <button
+          onClick={resetScore}
+          className="mt-6 px-6 py-2 border rounded-md"
+        >
+          Reset Score
+        </button>
+        <button
+          onClick={toggleRules}
+          className="mt-4 px-6 py-2 bg-black text-white rounded-md"
+        >
+          {showRules ? "Hide Rules" : "Show Rules"}
+        </button>
+      </div>
+
+      {/* Rules */}
+      {showRules && (
+        <div className="mt-8">
+          <ShowRules />
+        </div>
+      )}
+    </div>
   );
 };
 
